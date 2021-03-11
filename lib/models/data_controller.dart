@@ -2,16 +2,66 @@ import 'package:yaz_client/yaz_client.dart';
 import '/models/games.dart';
 import '/models/publishers.dart';
 
+enum SortType { establishDate, addDate, name, reviewCount }
+
 ///
 class DataController {
   DataController._();
 
-  static final DataController _kindController = DataController._();
+  static final DataController _dataController = DataController._();
 
   ///
-  factory DataController() => _kindController;
+  factory DataController() => _dataController;
+  SortType sortType = SortType.establishDate;
+bool hasMore =true;
+bool isLoading=false;
+  Sorting sorting = Sorting.ascending;
+  Map<String, Game> gameMap = {};
+  List<String> gameList = [];
 
-  ///KindController giriş işlemlerini yaptı mı?
+  Future<void> _getGames(int offset) async {
+    late String fieldName;
+    if (sortType == SortType.establishDate) {
+      fieldName = 'game_date';
+    } else if (sortType == SortType.addDate) {
+      fieldName = 'add_time';
+    } else if (sortType == SortType.name) {
+      fieldName = 'game_name';
+    } else if (sortType == SortType.reviewCount) {
+      fieldName = 'review_count';
+    }
+
+   var _l =await socketService.listQuery(Query.create('games',
+        limit: 5, sorts: {fieldName: sorting}, offset: offset));
+    for (var _gameMap in (_l)) {
+      var game = Game.fromJson(_gameMap!);
+      gameMap[game.id] = game;
+      gameList.add(game.id);
+    }
+ hasMore=_l.length==5;
+    isLoading=false;
+    return;
+  }
+
+  Future<void> getGamesFromDb() async {
+    if(isLoading)return;
+    isLoading=true;
+    gameList.clear();
+    hasMore=true;
+    return _getGames(0);
+
+  }
+
+  Future<void> loadMore() async {
+    if(isLoading)return;
+    isLoading=true;
+    if(hasMore){
+    return _getGames(gameList.length);}
+
+    return;
+  }
+
+/* ///KindController giriş işlemlerini yaptı mı?
   bool isInit = false;
 
   ///
@@ -57,5 +107,5 @@ class DataController {
 
     print('sorgu yapıldı');
     return;
-  }
-  }
+  }*/
+}

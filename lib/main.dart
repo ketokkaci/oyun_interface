@@ -10,7 +10,6 @@ void main() async {
   var connected = await socketService.connect();
   print(connected ? 'Giriş Yapıldı.' : 'Giriş Yapılamadı.');
 
-  await DataController().init();
 
   runApp(MyApp());
 }

@@ -16,9 +16,9 @@ class _MainPageState extends State<MainPage> {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (c) {
-                    return AddGames();
-                  }));
+                  // Navigator.push(context, MaterialPageRoute(builder: (c) {
+                  //   return AddGames();
+                 // }));
                 },
                 child: Text("Oyun Ekle")),
             SizedBox(
@@ -37,9 +37,9 @@ class _MainPageState extends State<MainPage> {
             ElevatedButton(
                 onPressed: () {
 
-                  Navigator.push(context, MaterialPageRoute(builder: (c) {
-                    return AddKindsPage();
-                  }));
+                  // Navigator.push(context, MaterialPageRoute(builder: (c) {
+                  //   return AddKindsPage();
+                  // }));
                 },
                 child: Text("Tür Ekle")),
             SizedBox(
