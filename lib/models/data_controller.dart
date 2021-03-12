@@ -18,6 +18,7 @@ class DataController {
   Sorting sorting = Sorting.descending;
   Map<String, Game> gameMap = {};
   List<String> gameList = [];
+  Map<String, Publisher> publishersMap = {};
 
   Future<void> _getGames(int offset) async {
     late String fieldName;
@@ -43,8 +44,6 @@ class DataController {
     return;
   }
 
-
-
   /// Listeyi baştan yükleme fonksyionu
   Future<void> getGamesFromDb() async {
     if (isLoading) return;
@@ -62,6 +61,17 @@ class DataController {
     }
 
     return;
+  }
+
+  Future<Publisher?> getPublisherFromDb(String publisherId) async {
+    if (publishersMap[publisherId] != null) {
+      return publishersMap[publisherId];
+    }
+    var res = await socketService.query(
+        Query.create('publishers', equals: {'publisher_id': publisherId}));
+    var publisher = Publisher.fromMap(res.data!);
+    publishersMap[publisher.id] = publisher;
+    return publishersMap[publisherId];
   }
 
 /* ///KindController giriş işlemlerini yaptı mı?
