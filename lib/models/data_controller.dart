@@ -12,10 +12,10 @@ class DataController {
 
   ///
   factory DataController() => _dataController;
-  SortType sortType = SortType.establishDate;
-bool hasMore =true;
-bool isLoading=false;
-  Sorting sorting = Sorting.ascending;
+  SortType sortType = SortType.addDate;
+  bool hasMore = true;
+  bool isLoading = false;
+  Sorting sorting = Sorting.descending;
   Map<String, Game> gameMap = {};
   List<String> gameList = [];
 
@@ -31,32 +31,35 @@ bool isLoading=false;
       fieldName = 'review_count';
     }
 
-   var _l =await socketService.listQuery(Query.create('games',
+    var _l = await socketService.listQuery(Query.create('games',
         limit: 5, sorts: {fieldName: sorting}, offset: offset));
     for (var _gameMap in (_l)) {
       var game = Game.fromJson(_gameMap!);
       gameMap[game.id] = game;
       gameList.add(game.id);
     }
- hasMore=_l.length==5;
-    isLoading=false;
+    hasMore = _l.length == 5;
+    isLoading = false;
     return;
   }
 
-  Future<void> getGamesFromDb() async {
-    if(isLoading)return;
-    isLoading=true;
-    gameList.clear();
-    hasMore=true;
-    return _getGames(0);
 
+
+  /// Listeyi baştan yükleme fonksyionu
+  Future<void> getGamesFromDb() async {
+    if (isLoading) return;
+    isLoading = true;
+    gameList.clear();
+    hasMore = true;
+    return _getGames(0);
   }
 
   Future<void> loadMore() async {
-    if(isLoading)return;
-    isLoading=true;
-    if(hasMore){
-    return _getGames(gameList.length);}
+    if (isLoading) return;
+    isLoading = true;
+    if (hasMore) {
+      return _getGames(gameList.length);
+    }
 
     return;
   }

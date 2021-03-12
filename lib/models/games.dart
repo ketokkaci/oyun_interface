@@ -1,12 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yaz_client/yaz_client.dart';
 
-part '/models/games_g.dart';
 
-@JsonSerializable()
 ///
 class GameKind {
   @JsonKey(name: "kind_name")
+
   ///
   String name;
 
@@ -32,6 +31,7 @@ class GameKind {
 }
 
 @JsonSerializable()
+
 ///
 class Game {
   /// return DateTime from json stored type time (millisecondsSinceEpoch)
@@ -42,6 +42,7 @@ class Game {
   static int dateToInt(DateTime time) => time.millisecondsSinceEpoch;
 
   @JsonKey(name: "game_id")
+
   ///
   String id;
 
@@ -79,12 +80,36 @@ class Game {
   ///
   Game(
       {required this.name,
-        required this.point,
-        required this.id,
-        required this.date,
-        required this.addTime,
-        required this.reviewCount,
-        required this.kinds,
-        required this.publisherId});
+      required this.point,
+      required this.id,
+      required this.date,
+      required this.addTime,
+      required this.reviewCount,
+      required this.kinds,
+      required this.publisherId});
+}
 
+
+
+GameKind _$GameKindFromJson(Map<String, dynamic> json) {
+  return GameKind(
+    name: json['kind_name'] as String,
+    point: (json['popularity_point'] as num).toDouble(),
+    id: json['kind_id'] as String,
+  );
+}
+
+
+Game _$GameFromJson(Map<String, dynamic> json) {
+  return Game(
+    name: json['game_name'] as String,
+    point: (json['game_point'] as num).toDouble(),
+    id: json['game_id'] as String,
+    date: json['game_date'] as int,
+    addTime: Game.dateFromJson(json['add_time'] as int),
+    reviewCount: json['review_count'] as int,
+    kinds:
+    (json['game_kinds'] as List<dynamic>).map((e) => e.toString()).toList(),
+    publisherId: json['publisher_id'] as String,
+  );
 }
