@@ -19,15 +19,14 @@ class DataController {
   Map<String, Game> gameMap = {};
   List<String> gameList = [];
   Map<String, Publisher> publishersMap = {};
-  late List<GameKind> gameKind;
+  Map<String, GameKind> gameKind = {};
   bool isInit = false;
 
   ///
   Future<void> init() async {
     if (isInit) return;
 
-    await Future.wait(
-        [_getKindsFromDb()]);
+    await Future.wait([_getKindsFromDb()]);
 
     isInit = true;
   }
@@ -35,12 +34,15 @@ class DataController {
   Future<void> _getKindsFromDb() async {
     var kindsData = await socketService.listQuery(Query.create('kinds'));
 
-    gameKind = kindsData.map<GameKind>((e) => GameKind.fromJson(e!)).toList();
+    var _k = kindsData.map<GameKind>((e) => GameKind.fromJson(e!));
+
+    for (var kind in _k) {
+      gameKind[kind.id] = kind;
+    }
 
     print('sorgu yapıldı');
     return;
   }
-
 
   Future<void> _getGames(int offset) async {
     late String fieldName;

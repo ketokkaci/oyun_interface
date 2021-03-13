@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:oyun_interface/models/data_controller.dart';
 import 'package:oyun_interface/models/games.dart';
 import 'package:oyun_interface/models/publishers.dart';
-import 'package:oyun_interface/widgets/game_widget.dart';
 
 class GamePage extends StatefulWidget {
   GamePage({required this.game, Key? key}) : super(key: key);
@@ -32,12 +31,17 @@ class _GamePageState extends State<GamePage> {
 
   @override
   void initState() {
+
     _getPub();
+    print(widget.game.kinds.map((e) => dataController.gameKind[e]!.name));
     super.initState();
   }
 
+  DataController dataController = DataController();
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
           title: Text(
