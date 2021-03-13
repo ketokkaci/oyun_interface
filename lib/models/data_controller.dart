@@ -67,6 +67,7 @@ class DataController {
     if (publishersMap[publisherId] != null) {
       return publishersMap[publisherId];
     }
+    print("Veritabanından Getiriyor");
     var res = await socketService.query(
         Query.create('publishers', equals: {'publisher_id': publisherId}));
     var publisher = Publisher.fromMap(res.data!);

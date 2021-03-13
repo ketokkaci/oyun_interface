@@ -24,7 +24,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    dataController.getGamesFromDb().then((value) {
+    dataController.getGamesFromDb().then((value) async {
+      await Future.delayed(Duration(milliseconds: 100));
       setState(() {});
     });
     super.initState();
@@ -41,48 +42,57 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         body: Column(
       children: [
-        IconButton(
-            onPressed: () async {
-              /// List<SortType> => List<...>
+        Row(
+          children: [
+            IconButton(
+                onPressed: () {
+                  setState(() {});
+                },
+                icon: Icon(Icons.ac_unit)),
+            IconButton(
+                onPressed: () async {
+                  /// List<SortType> => List<...>
 
-              var l = await showDialog<List>(
-                  context: context,
-                  builder: (c) {
-                    return SimpleDialog(
-                      children: SortType.values
-                          .map<Widget>((e) => SimpleDialogOption(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                              c, [e, Sorting.ascending]);
-                                        },
-                                        icon: Icon(Icons.arrow_upward)),
-                                    Text(e.toString().split(".").last),
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                              c, [e, Sorting.descending]);
-                                        },
-                                        icon: Icon(Icons.arrow_downward)),
-                                  ],
-                                ),
-                              ))
-                          .toList(),
-                    );
-                  });
+                  var l = await showDialog<List>(
+                      context: context,
+                      builder: (c) {
+                        return SimpleDialog(
+                          children: SortType.values
+                              .map<Widget>((e) => SimpleDialogOption(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  c, [e, Sorting.ascending]);
+                                            },
+                                            icon: Icon(Icons.arrow_upward)),
+                                        Text(e.toString().split(".").last),
+                                        IconButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                  c, [e, Sorting.descending]);
+                                            },
+                                            icon: Icon(Icons.arrow_downward)),
+                                      ],
+                                    ),
+                                  ))
+                              .toList(),
+                        );
+                      });
 
-              if (l != null && l.isNotEmpty) {
-                dataController.sortType = l[0];
-                dataController.sorting = l[1];
-                await dataController.getGamesFromDb();
-                setState(() {});
-              }
-            },
-            icon: Icon(Icons.sort)),
+                  if (l != null && l.isNotEmpty) {
+                    dataController.sortType = l[0];
+                    dataController.sorting = l[1];
+                    await dataController.getGamesFromDb();
+                    setState(() {});
+                  }
+                },
+                icon: Icon(Icons.sort)),
+          ],
+        ),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {
@@ -111,8 +121,6 @@ class _HomePageState extends State<HomePage> {
                       });
                     }
                   }
-
-                  //TODO: Game getirilecek
 
                   return GameWidget(game!);
                 }),
