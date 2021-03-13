@@ -19,6 +19,28 @@ class DataController {
   Map<String, Game> gameMap = {};
   List<String> gameList = [];
   Map<String, Publisher> publishersMap = {};
+  late List<GameKind> gameKind;
+  bool isInit = false;
+
+  ///
+  Future<void> init() async {
+    if (isInit) return;
+
+    await Future.wait(
+        [_getKindsFromDb()]);
+
+    isInit = true;
+  }
+
+  Future<void> _getKindsFromDb() async {
+    var kindsData = await socketService.listQuery(Query.create('kinds'));
+
+    gameKind = kindsData.map<GameKind>((e) => GameKind.fromJson(e!)).toList();
+
+    print('sorgu yapıldı');
+    return;
+  }
+
 
   Future<void> _getGames(int offset) async {
     late String fieldName;

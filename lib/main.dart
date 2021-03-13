@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oyun_interface/pages/home_page.dart';
 import 'package:yaz_client/yaz_client.dart';
-
+import "/models/data_controller.dart";
 void main() async {
   YazClient.init(
       secret1: "11111111111111111111111111111111",
@@ -10,7 +10,7 @@ void main() async {
       port: "9092");
   var connected = await socketService.connect();
   print(connected ? 'Giriş Yapıldı.' : 'Giriş Yapılamadı.');
-
+  await DataController().init();
   var app = GameApp();
 
   runApp(app);
