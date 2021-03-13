@@ -6,8 +6,8 @@ void main() async {
   YazClient.init(
       secret1: "11111111111111111111111111111111",
       secret2: "11111111111111111111111111111111",
-      host: '192.168.43.62',
-      port: "9092");
+      host: '192.168.0.11',
+      port: "8090");
   var connected = await socketService.connect();
   print(connected ? 'Giriş Yapıldı.' : 'Giriş Yapılamadı.');
   await DataController().init();

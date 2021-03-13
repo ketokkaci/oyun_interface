@@ -29,6 +29,8 @@ class DataController {
     await Future.wait([_getKindsFromDb()]);
 
     isInit = true;
+
+    print(gameKind["500a1awd441"]);
   }
 
   Future<void> _getKindsFromDb() async {
