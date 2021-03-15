@@ -93,6 +93,46 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(Icons.sort)),
           ],
         ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: dataController.gameKind.entries
+                .map((e) => ActionChip(
+                    backgroundColor:
+                        dataController.selectedKinds.contains(e.key)
+                            ? Colors.blue
+                            : null,
+                    label: Text(
+                      e.value.name,
+                      style: TextStyle(
+                          color: dataController.selectedKinds.contains(e.key)
+                              ? Colors.white
+                              : null),
+                    ),
+                    onPressed: () async {
+                      if (dataController.selectedKinds.contains(e.key)) {
+                        /// Seçiliyken basmış
+                        dataController.selectedKinds.remove(e.key);
+
+                        setState(() {});
+
+                        await dataController.getGamesFromDb();
+
+                        setState(() {});
+                      } else {
+                        /// Seçili Değilken basmış
+                        dataController.selectedKinds.add(e.key);
+
+                        setState(() {});
+
+                        await dataController.getGamesFromDb();
+
+                        setState(() {});
+                      }
+                    }))
+                .toList(),
+          ),
+        ),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () async {

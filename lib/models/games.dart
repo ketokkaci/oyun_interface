@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:oyun_interface/models/comment.dart';
 import 'package:yaz_client/yaz_client.dart';
-
 
 ///
 class GameKind {
@@ -31,10 +31,8 @@ class GameKind {
 }
 
 @JsonSerializable()
-
-///
 class Game {
-  /// return DateTime from json stored type time (millisecondsSinceEpoch)
+  ///return DateTime from json stored type time (millisecondsSinceEpoch)
   static DateTime dateFromJson(int raw) =>
       DateTime.fromMillisecondsSinceEpoch(raw);
 
@@ -87,9 +85,26 @@ class Game {
       required this.reviewCount,
       required this.kinds,
       required this.publisherId});
+
+  ///oyuna yorum ekleyen fonk.
+  ///başarısızsa null döndürür
+  Future<Comment?> addComment(
+      {required int commentPoint,
+      required String content,
+      required String userName}) async {
+    var _c = Comment.create(
+        gameId: this.id,
+        point: commentPoint,
+        content: content,
+        userName: userName);
+    var _res = await socketService
+        .insertQuery(Query.create("comments", document: _c.toMap()));
+    if (_res.isSuccess) {
+      return _c;
+    }
+    return null;
+  }
 }
-
-
 
 GameKind _$GameKindFromJson(Map<String, dynamic> json) {
   return GameKind(
@@ -98,7 +113,6 @@ GameKind _$GameKindFromJson(Map<String, dynamic> json) {
     id: json['kind_id'] as String,
   );
 }
-
 
 Game _$GameFromJson(Map<String, dynamic> json) {
   return Game(
@@ -109,7 +123,7 @@ Game _$GameFromJson(Map<String, dynamic> json) {
     addTime: Game.dateFromJson(json['add_time'] as int),
     reviewCount: json['review_count'] as int,
     kinds:
-    (json['game_kinds'] as List<dynamic>).map((e) => e.toString()).toList(),
+        (json['game_kinds'] as List<dynamic>).map((e) => e.toString()).toList(),
     publisherId: json['publisher_id'] as String,
   );
 }

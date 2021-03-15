@@ -1,6 +1,7 @@
 import 'package:yaz_client/yaz_client.dart';
 import '/models/games.dart';
 import '/models/publishers.dart';
+import 'comment.dart';
 
 enum SortType { establishDate, addDate, name, reviewCount }
 
@@ -21,6 +22,10 @@ class DataController {
   Map<String, Publisher> publishersMap = {};
   Map<String, GameKind> gameKind = {};
   bool isInit = false;
+  List<String> selectedKinds = [];
+
+  /// selecteds'a eklenecek,
+  /// sonra arama yapılacak
 
   ///
   Future<void> init() async {
@@ -29,14 +34,12 @@ class DataController {
     await Future.wait([_getKindsFromDb()]);
 
     isInit = true;
-
-    print(gameKind["500a1awd441"]);
   }
 
   Future<void> _getKindsFromDb() async {
     var kindsData = await socketService.listQuery(Query.create('kinds'));
 
-    var _k = kindsData.map<GameKind>((e) => GameKind.fromJson(e!));
+    var _k = kindsData!.map<GameKind>((e) => GameKind.fromJson(e));
 
     for (var kind in _k) {
       gameKind[kind.id] = kind;
@@ -58,10 +61,16 @@ class DataController {
       fieldName = 'review_count';
     }
 
+    /// Ve  =     alan : { "\$all" : [list]}
+    /// Veya =    alan : [list]
+
     var _l = await socketService.listQuery(Query.create('games',
-        limit: 5, sorts: {fieldName: sorting}, offset: offset));
-    for (var _gameMap in (_l)) {
-      var game = Game.fromJson(_gameMap!);
+        equals: {"game_kinds": selectedKinds},
+        limit: 5,
+        sorts: {fieldName: sorting},
+        offset: offset));
+    for (var _gameMap in (_l)!) {
+      var game = Game.fromJson(_gameMap);
       gameMap[game.id] = game;
       gameList.add(game.id);
     }
@@ -99,6 +108,12 @@ class DataController {
     var publisher = Publisher.fromMap(res.data!);
     publishersMap[publisher.id] = publisher;
     return publishersMap[publisherId];
+  }
+
+  Future<List<Comment>?> getCommentsByGameFromDb(String gameId) async {
+   var _res= await socketService
+        .listQuery(Query.create('comments', equals: {'game_id': gameId}));
+    return _res!.map((e) => Comment.fromMap(e)).toList();
   }
 
 /* ///KindController giriş işlemlerini yaptı mı?

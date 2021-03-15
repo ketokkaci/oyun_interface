@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:oyun_interface/pages/home_page.dart';
 import 'package:yaz_client/yaz_client.dart';
 import "/models/data_controller.dart";
+import 'pages/home_page.dart';
 void main() async {
   YazClient.init(
       secret1: "11111111111111111111111111111111",
@@ -40,6 +40,10 @@ void main() async {
 class GameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
+
+    
+    
     return MaterialApp(
       home: HomePage(),
     );
