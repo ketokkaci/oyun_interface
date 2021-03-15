@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:oyun_interface/models/data_controller.dart';
-import 'package:oyun_interface/models/games.dart';
-import 'package:oyun_interface/widgets/benim_yukleyici.dart';
-import 'package:oyun_interface/widgets/game_widget.dart';
 import 'package:yaz_client/yaz_client.dart';
+
+import '../models/data_controller.dart';
+import '../widgets/benim_yukleyici.dart';
+import '../widgets/game_widget.dart';
 
 /// Her safyayı kapsayan bir tane Scaffold Widget'ı olmalıdır
 /// Bu Widget Classı - Bu widget için yaratılan boşluğu

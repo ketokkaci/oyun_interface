@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:oyun_interface/models/comment.dart';
 import 'package:yaz_client/yaz_client.dart';
+
+import 'comment.dart';
 
 ///
 class GameKind {
@@ -31,6 +32,7 @@ class GameKind {
 }
 
 @JsonSerializable()
+///
 class Game {
   ///return DateTime from json stored type time (millisecondsSinceEpoch)
   static DateTime dateFromJson(int raw) =>
@@ -93,7 +95,7 @@ class Game {
       required String content,
       required String userName}) async {
     var _c = Comment.create(
-        gameId: this.id,
+        gameId: id,
         point: commentPoint,
         content: content,
         userName: userName);

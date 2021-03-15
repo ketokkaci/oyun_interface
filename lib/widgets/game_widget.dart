@@ -1,40 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:oyun_interface/models/games.dart';
-import 'package:oyun_interface/pages/game_page.dart';
+import '../models/games.dart';
+import '../pages/game_page.dart';
 
-class Daire<T> {
-  Daire({required this.orjin, required this.radius});
-
-  T orjin;
-
-  double radius;
-
-  T getir() {
-    return orjin;
-  }
-}
-
-class Cizgi {
-  Cizgi(this.a);
-
-  double a;
-}
-
-a() {
-  var b = Nokta(8, 1);
-  var ciz = Cizgi(8);
-  var daire = Daire<Cizgi>(orjin: ciz, radius: 8.1);
-
-  daire.getir();
-}
-
-/// X , Y , Noktayı oluşturmak için bu bilgilere ihtiyaç var
-class Nokta {
-  Nokta(this.x, this.y);
-
-  double x, y;
-}
 
 /// Widget'ın içindeki her şey final olmalıdır
 class GameWidget extends StatefulWidget {

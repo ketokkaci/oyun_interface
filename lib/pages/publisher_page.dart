@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:oyun_interface/models/data_controller.dart';
-import 'package:oyun_interface/models/games.dart';
-import 'package:oyun_interface/models/publishers.dart';
-import 'package:oyun_interface/widgets/game_widget.dart';
 import 'package:yaz_client/yaz_client.dart';
 
+import '../models/games.dart';
+import '../models/publishers.dart';
+import '../widgets/game_widget.dart';
+
+///
 class PublisherPage extends StatefulWidget {
+  ///
   PublisherPage({required this.publisher});
 
+  ///
   final Publisher publisher;
 
   @override

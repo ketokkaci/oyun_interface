@@ -3,7 +3,20 @@ import '/models/games.dart';
 import '/models/publishers.dart';
 import 'comment.dart';
 
-enum SortType { establishDate, addDate, name, reviewCount }
+///
+enum SortType {
+  ///
+  establishDate,
+
+  ///
+  addDate,
+
+  ///
+  name,
+
+  ///
+  reviewCount
+}
 
 ///
 class DataController {
@@ -13,15 +26,38 @@ class DataController {
 
   ///
   factory DataController() => _dataController;
+
+  ///
   SortType sortType = SortType.addDate;
+
+  ///
   bool hasMore = true;
+
+  ///
   bool isLoading = false;
+
+  ///
+  ///
   Sorting sorting = Sorting.descending;
+
+  ///
+  ///
   Map<String, Game> gameMap = {};
+
+  ///
+  ///
   List<String> gameList = [];
+
+  ///
   Map<String, Publisher> publishersMap = {};
+
+  ///
   Map<String, GameKind> gameKind = {};
+
+  ///
   bool isInit = false;
+
+  ///
   List<String> selectedKinds = [];
 
   /// selecteds'a eklenecek,
@@ -88,6 +124,7 @@ class DataController {
     return _getGames(0);
   }
 
+  ///
   Future<void> loadMore() async {
     if (isLoading) return;
     isLoading = true;
@@ -98,6 +135,7 @@ class DataController {
     return;
   }
 
+  ///
   Future<Publisher?> getPublisherFromDb(String publisherId) async {
     if (publishersMap[publisherId] != null) {
       return publishersMap[publisherId];
@@ -110,9 +148,10 @@ class DataController {
     return publishersMap[publisherId];
   }
 
+  ///
   Future<List<Comment>?> getCommentsByGameFromDb(String gameId) async {
-   var _res= await socketService
-        .listQuery(Query.create('comments', equals: {'game_id': gameId}));
+    var _res = await socketService.listQuery(Query.create('comments',
+        equals: {'game_id': gameId}, sorts: {"add_time": Sorting.descending}));
     return _res!.map((e) => Comment.fromMap(e)).toList();
   }
 

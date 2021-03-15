@@ -1,8 +1,23 @@
 import 'package:yaz_client/yaz_client.dart';
 
+///
 class Comment {
-  String id, gameId, userName, content;
+  ///
+  String id,
+
+      ///
+      gameId,
+
+      ///
+      userName,
+
+      ///
+      content;
+
+  ///
   DateTime addTime;
+
+  ///
   int point;
 
   ///
@@ -22,7 +37,8 @@ class Comment {
       required this.userName})
       : id = Statics.getRandomId(30),
         addTime = DateTime.now();
-///
+
+  ///
   Map<String, dynamic> toMap() {
     return {
       "comment_id": id,
@@ -33,12 +49,13 @@ class Comment {
       "add_time": addTime.millisecondsSinceEpoch
     };
   }
-///
+
+  ///
   factory Comment.fromMap(Map<String, dynamic> map) {
     return Comment(
         id: map["comment_id"],
         gameId: map["game_id"],
-        addTime: DateTime.fromMillisecondsSinceEpoch( map["add_time"]),
+        addTime: DateTime.fromMillisecondsSinceEpoch(map["add_time"]),
         point: map["point"],
         content: map["content"],
         userName: map["user_name"]);
